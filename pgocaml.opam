@@ -18,7 +18,7 @@ license: "LGPL-2.0 with OCaml linking exception"
 build: [["dune" "build" "-p" name "-j" jobs]]
 depends: [
   "calendar"
-  "csv"
+  "csv" {<= "2.1"}
   "dune" {>= "1.10"}
   "hex"
   "ocaml" {>= "4.07"}
@@ -27,4 +27,5 @@ depends: [
   "ppx_deriving" {>= "4.0"}
   "rresult"
   "sexplib"
+  "reason"
 ]

@@ -1,8 +1,8 @@
 ;(rule
-;  (targets PGOCaml_config.ml)
-;  (deps PGOCaml_config.ml.in)
+;  (targets PGOCaml_config.re)
+;  (deps PGOCaml_config.re.in)
 ;  (action
-;    (with-stdout-to PGOCaml_config.ml (run ./genconfig.sh))))
+;    (with-stdout-to PGOCaml_config.re (run ./genconfig.sh))))
 
 (executable
   (name PGOCaml_genconfig)
@@ -11,10 +11,10 @@
   (modules PGOCaml_genconfig))
 
 (rule
-  (targets PGOCaml_config.ml)
+  (targets PGOCaml_config.re)
   (deps PGOCaml_genconfig.exe)
   (action
-    (with-stdout-to PGOCaml_config.ml (run ./PGOCaml_genconfig.exe))))
+    (with-stdout-to PGOCaml_config.re (run ./PGOCaml_genconfig.exe))))
 
 (library
   (name PGOCaml)
