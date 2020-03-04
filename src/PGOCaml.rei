@@ -1,4 +1,4 @@
-(* PG'OCaml is a set of OCaml bindings for the PostgreSQL database.
+/* PG'OCaml is a set of OCaml bindings for the PostgreSQL database.
  *
  * PG'OCaml - type safe interface to PostgreSQL.
  * Copyright (C) 2005-2009 Richard Jones and other authors.
@@ -17,10 +17,8 @@
  * along with this library; see the file COPYING.  If not, write to
  * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
- *)
+ */
 
-module Simple_thread : PGOCaml_generic.THREAD
-  with type 'a t = 'a
+module Simple_thread: PGOCaml_generic.THREAD with type t('a) = 'a;
 
-include PGOCaml_generic.PGOCAML_GENERIC
-  with type 'a monad = 'a
+include PGOCaml_generic.PGOCAML_GENERIC with type monad('a) = 'a;

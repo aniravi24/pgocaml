@@ -1,4 +1,4 @@
-(* PG'OCaml is a set of OCaml bindings for the PostgreSQL database.
+/* PG'OCaml is a set of OCaml bindings for the PostgreSQL database.
  *
  * PG'OCaml - type safe interface to PostgreSQL.
  * Copyright (C) 2005-2009 Richard Jones and other authors.
@@ -17,28 +17,31 @@
  * along with this library; see the file COPYING.  If not, write to
  * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
- *)
+ */
 
-module Simple_thread = struct
-  type 'a t = 'a
-  let return x = x
-  let (>>=) v f =  f v
-  let fail = raise
-  let catch f fexn = try f () with e -> fexn e
+module Simple_thread = {
+  type t('a) = 'a;
+  let return = x => x;
+  let (>>=) = (v, f) => f(v);
+  let fail = raise;
+  let catch = (f, fexn) =>
+    try (f()) {
+    | e => fexn(e)
+    };
 
-  type in_channel = Stdlib.in_channel
-  type out_channel = Stdlib.out_channel
-  let open_connection = Unix.open_connection
-  let output_char = output_char
-  let output_binary_int = output_binary_int
-  let output_string = output_string
-  let flush = flush
-  let input_char = input_char
-  let input_binary_int = input_binary_int
-  let really_input = really_input
-  let close_in = close_in
-end
+  type in_channel = Stdlib.in_channel;
+  type out_channel = Stdlib.out_channel;
+  let open_connection = Unix.open_connection;
+  let output_char = output_char;
+  let output_binary_int = output_binary_int;
+  let output_string = output_string;
+  let flush = flush;
+  let input_char = input_char;
+  let input_binary_int = input_binary_int;
+  let really_input = really_input;
+  let close_in = close_in;
+};
 
-module M = PGOCaml_generic.Make (Simple_thread)
+module M = PGOCaml_generic.Make(Simple_thread);
 
-include M
+include M;
