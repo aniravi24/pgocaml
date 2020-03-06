@@ -18,7 +18,7 @@ license: "LGPL-2.0 with OCaml linking exception"
 build: [["dune" "build" "-p" name "-j" jobs]]
 depends: [
   "calendar"
-  "csv" {<= "2.1"}
+  "csv"
   "dune" {>= "1.10"}
   "hex"
   "ocaml" {>= "4.07"}
