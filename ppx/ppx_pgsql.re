@@ -1098,11 +1098,23 @@ let pgocaml_rewriter = (config, _cookies) => {
       (fun args -> migration.copy_mapper (pgocaml_mapper args))
   */
 
-let () =
-  Driver.register(
+let () = {
+  Migrate_parsetree.Driver.register(
     ~name="pgocaml",
-    ~reset_args=_ => (),
     ~args=[],
     Versions.ocaml_407,
-    pgocaml_rewriter,
+    pgocaml_rewriter
   );
+
+  let argv =
+    switch (Sys.argv) {
+    | [|program, input_file, output_file|] =>
+      [|program, input_file, "-o", output_file, "--dump-ast" |]
+    | _ =>
+      Sys.argv
+      /* Or print some error message, because BuckleScript should
+         never pass any other pattern of arguments. */
+    };
+
+  Migrate_parsetree.Driver.run_main(~argv, ());
+};
