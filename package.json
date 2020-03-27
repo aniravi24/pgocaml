@@ -5,7 +5,8 @@
     "build": "bsb -make-world",
     "start": "bsb -make-world -w",
     "clean": "bsb -clean-world",
-    "copy-ppx": "cp ./_build/install/default/lib/pgocaml_ppx/ppx.exe ."
+    "copy-ppx": "cp ./_build/install/default/lib/pgocaml_ppx/ppx.exe .",
+    "build-ppx": "dune clean && dune build && yarn copy-ppx"
   },
   "keywords": [
     "BuckleScript"
