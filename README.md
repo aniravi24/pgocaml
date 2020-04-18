@@ -33,6 +33,9 @@ interface that implements the `PGOCaml_generic.THREAD` signature.
 * It doesn't work with other databases, nor will it ever work with other
 databases.
 
+# Build (not necessary for usage)
+```yarn clean && yarn build && yarn build-ppx```
+Yarn build-ppx sometimes fails to run correctly, if it does, just run the commands in the package.json script individually.
 # Usage
 
 PG'OCaml uses environment variables (or in-code parameters, which are [ill advised]
