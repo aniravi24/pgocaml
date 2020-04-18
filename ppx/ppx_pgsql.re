@@ -21,11 +21,11 @@ open PGOCaml_aux;
 open Printf;
 
 open Migrate_parsetree;
-open Migrate_parsetree.Ast_407.Ast_mapper;
-open Migrate_parsetree.Ast_407.Ast_helper;
-open Migrate_parsetree.Ast_407.Asttypes;
-open Migrate_parsetree.Ast_407.Parsetree;
-open Migrate_parsetree.Ast_407.Longident;
+open Migrate_parsetree.Ast_410.Ast_mapper;
+open Migrate_parsetree.Ast_410.Ast_helper;
+open Migrate_parsetree.Ast_410.Asttypes;
+open Migrate_parsetree.Ast_410.Parsetree;
+open Migrate_parsetree.Ast_410.Longident;
 
 let nullable_name = "nullable";
 let unravel_name = "unravel";
@@ -47,7 +47,7 @@ ocaml_version < (4, 8, 0);
 let exp_of_string = (~loc as _, x) => {
   let lexer = Lexing.from_string(x);
   Migrate_parsetree.Parse.expression(
-    Migrate_parsetree.Versions.ocaml_407,
+    Migrate_parsetree.Versions.ocaml_410,
     lexer,
   );
 };
@@ -61,7 +61,7 @@ let exp_of_string = (~loc, x) => {
   };
 
   Migrate_parsetree.Parse.expression(
-    Migrate_parsetree.Versions.ocaml_407,
+    Migrate_parsetree.Versions.ocaml_410,
     lexer,
   );
 };
@@ -237,6 +237,7 @@ let loc_raise = (_loc, exn) => raise(exn);
 let const_string = (~loc, str) => {
   pexp_desc: Pexp_constant([@implicit_arity] Pconst_string(str, None)),
   pexp_loc: loc,
+  pexp_loc_stack: [],
   pexp_attributes: [],
 };
 
@@ -417,6 +418,7 @@ let coretype_of_type = (~loc, ~dbh, oid) => {
     ptyp_desc: [@implicit_arity] Ptyp_constr({txt: typ, loc}, []),
     ptyp_loc: loc,
     ptyp_attributes: [],
+    ptyp_loc_stack: [],
   };
 };
 
@@ -1063,10 +1065,11 @@ let pgocaml_rewriter = (config, _cookies) => {
       | args =>
         let x = expand_sql(~config, ~genobject, loc, dbh, args);
         switch (x) {
-        | Rresult.Ok({pexp_desc, pexp_loc: _, pexp_attributes}) => {
+        | Rresult.Ok({pexp_desc, pexp_loc: _, pexp_attributes, pexp_loc_stack}) => {
             pexp_desc,
             pexp_loc: qloc,
             pexp_attributes,
+            pexp_loc_stack,
           }
         | [@implicit_arity] Error(s, loc) => {
             ...expr,
@@ -1090,7 +1093,7 @@ let pgocaml_rewriter = (config, _cookies) => {
 };
 
 /*let migration =
-    Versions.migrate Versions.ocaml_407 Versions.ocaml_current
+    Versions.migrate Versions.ocaml_410 Versions.ocaml_current
 
   let _ =
     Migrate_parsetree.Compiler_libs.Ast_mapper.register
@@ -1102,7 +1105,7 @@ let () = {
   Migrate_parsetree.Driver.register(
     ~name="pgocaml",
     ~args=[],
-    Versions.ocaml_407,
+    Versions.ocaml_410,
     pgocaml_rewriter
   );
 
